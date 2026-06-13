@@ -1,0 +1,269 @@
+:root{
+    --white: #f2f2f2;
+    --red: rgb(255,68,4);
+    --tomato:rgb(210,31,0);
+    --black: #1e1e1e;
+    --cream: rgb(222,218,207);
+    --green: rgb(35,84,20);
+    --green2:rgb(68,192,73);
+    --yellow: rgb(244,230,4);
+
+    --container-width: 500px;
+    --container-aspect-ratio: 604 / 574;
+}
+@font-face {
+  font-family: 'h2';
+  src: url('/photob/Assets/arial.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'h1';
+  src: url('/photob/Assets/IntraNet.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body{
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-image: url('/photob/Assets/keranjang2.png');
+    background-size: 100% auto; /* fills entire element, cropping if needed, maintains aspect ratio */
+    background-position: center;
+    background-repeat: no-repeat;
+    gap: 20px;
+}
+
+.button-container{
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+button{
+    color: var(--white);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    background-color: var(--tomato);
+    border: 1px solid #1e1e1e;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    border-radius: 35px;
+    bottom: 20px;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px var(--tomato); }
+  50% { box-shadow: 0 0 20px var(--tomato); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+button { animation: pulse 1.5s ease-in-out infinite,glow 1.5s ease-in-out infinite }
+
+button:hover{
+    transform: scale(1.05);
+    background-color: var(--red);
+}
+
+#select-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.56rem;
+    width: 12rem;
+    height: 4rem;
+    padding: 0.5rem 1rem;
+}
+h1{
+    font-family: 'h1';
+}
+h2{
+    font-family: 'h2';
+}
+.floating-title {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.floating-title span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background-color: var(--yellow);
+  outline: 2px solid #000;
+  color: var(--tomato);
+  font-size: 4rem;
+  font-weight: bold;
+  animation: float 2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.15s);
+  padding-top: 0.7rem;
+}
+
+.floating2-title {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.floating2-title span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: var(--green);
+  outline: 2px solid #000;
+  color: var(--yellow);
+  font-size: 2rem;
+  font-weight: bold;
+  animation: float 2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.15s);
+}
+.uppercase{
+    text-transform: uppercase;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.blip {
+  width: 100px;
+  height: 60px;
+  transform: scale(0.6);
+  background-color: transparent;
+  animation: blip 0.8s steps(1) infinite;
+  position: fixed;
+  top: 10px;
+  right: 20rem;
+}
+
+.photo {
+  width: 1280px;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+
+}
+@keyframes appear {
+  0%, 5% { opacity: 0; }
+  10%, 70% { opacity: 1; }
+  75%, 100% { opacity: 0; }
+}
+
+.photo img {
+  opacity: 0;
+  animation: appear 10s ease-in-out infinite;
+}
+
+#foto1 { animation-delay: 0s; }
+#foto2 { animation-delay: 1.5s; }
+#foto3 { animation-delay: 3s; }
+#foto4 { animation-delay: 4.5s; }
+
+.photo img {
+  width: 1280px;
+  height: auto;
+  background-color: transparent;
+  position: absolute;
+  transform: scale(0.3);
+  transform-origin: top left;
+
+}
+
+#foto1 { 
+  animation-delay: 0s; 
+  transform: scale(0.18);
+  top: 150px;
+  left: 50px;
+
+}
+#foto2 { 
+  animation-delay: 1.5s;
+  transform: scale(0.18);
+  top: 300px;
+  left: 1150px;
+
+}
+#foto4 { 
+  animation-delay: 3s; 
+  transform: scale(0.15);
+  top: 600px;
+  left: 1000px;
+
+}
+#foto3 { 
+  animation-delay: 4.5s;
+  transform: scale(0.17);
+  top: 550px;
+  left: 180px;
+
+}
+
+@keyframes blip {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+
+
+
+
+
+/*phone*/
+@media screen and (max-width: 600px){
+:root{
+    --container-width:320px;
+}
+
+button{
+    font-size:1.4rem;
+}
+#select-button{
+    width: 9rem;
+    height: 3rem;
+}
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  /* iPad styles */
+  :root{
+    --container-width:380px;
+}
+button{
+    font-size:1.4rem;
+    margin-bottom: 3rem;
+}
+#select-button{
+    width: 9rem;
+    height: 3rem;
+}
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mari bergaya</title>
+    <link rel="stylesheet" href="Stylesheets/camera.css"/>
+    <link rel="icon" href="Assets/favicon-tomato.png" type="image/x-icon"/>
+</head>
+<body>
+    <!--<div class="logo">
+        <img src="Assets/favicon-tomato.png" alt="Logo">
+    </div>!-->
+    <div class="tomato">
+        <img src="/photob/Assets/toma1.png" class="tom1" alt="">
+        <img src="/photob/Assets/tomat2.png" class="tom2" alt="">
+        <img src="/photob/Assets/tomat3.png" class="tom3" alt="">
+    </div>
+    <div class="photobooth-container">
+        <div class="countdown-timer"></div>
+        <canvas id="finalCanvas" width="1176" height="1470"></canvas>
+        <video id="liveVideo" autoplay playsinline muted></video>
+        <img class="frame-overlay" src="Assets/tomatoframe-01.png" alt="Frame1">
+    </div>
+    <div class="controls">
+        <button id="takePhoto">Capture</button>
+        <button id="retakeBtn">Retake</button>
+        <button id="readyButton" disabled style="display: none;">Ready</button>
+        <!--<button id="downloadBtn">Download</button>!-->
+    </div>
+    <div class="filter">
+        <button id="filter1Btn">Filter Sepia</button>
+        <button id="filter2Btn">Filter BW</button>
+        <button id="filter0Btn">No Filter</button> 
+    </div>
+    <div class="frame">
+        <button id="frame1Btn">Frame Tomato</button>
+        <button id="frame2Btn">Frame Kotak</button>
+    </div>
+    <script src="Javascript/camera.js"></script>
+</body>
+</html>

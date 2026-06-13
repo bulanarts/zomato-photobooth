@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upload fotomu</title>
+    <link rel="stylesheet" href="Stylesheets/camera.css"/>
+    <link rel="icon" href="Assets/favicon-tomato.png" type="image/x-icon"/>
+</head>
+<body>
+    <div class="tomato">
+        <img src="/photob/Assets/toma1.png" class="tom1" alt="">
+        <img src="/photob/Assets/tomat2.png" class="tom2" alt="">
+        <img src="/photob/Assets/tomat3.png" class="tom3" alt="">
+    </div>
+    <div class="photobooth-container">
+        <canvas id="finalCanvas" width="1176" height="1470"></canvas>
+        <!--hidden file input-->
+        <input type="file" id="uploadPhotoInput" accept="image/*"/>
+        <img class="frame-overlay" src="/photob/Assets/tomatoframe-01.png" alt="frame overlay" />
+    </div>
+
+
+    <div class="controls">
+        <button id="uploadPhoto">Upload Fotomu!</button>
+        <button id="readyButton" disabled style="display: none;">Edit fotomu!</button>
+        <button id="downloadBtn" style="display: none;">Download</button>
+    </div>
+
+
+    <script src="Javascript/upload.js"></script>
+    
+</body>
+</html>
