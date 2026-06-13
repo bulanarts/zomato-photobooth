@@ -50,7 +50,7 @@ readyBtn.style.display = 'inline-block';
 readyBtn.disabled = false;
 downloadBtn.style.display = 'inline-block';
     };
-frame.src='../Assets/tomatoframe-01.png';
+frame.src='Assets/tomatoframe-01.png';
 };
 
 //ready button
