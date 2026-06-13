@@ -2,7 +2,7 @@
 const WIDTH = 1176, HEIGHT = 1470, HALF = HEIGHT / 2;
 
 // Define currentFrame variable (BEFORE using it)
-let currentFrame = 'Assets/tomatoframe-01.png';
+let currentFrame = '../Assets/tomatoframe-01.png';
 
 // Define filter - Track current filter: 'none', 'sepia', 'bw'
 let currentFilter = 'none'; // 
@@ -176,7 +176,7 @@ document.getElementById('retakeBtn').addEventListener('click', retakePhoto);
 const showFramePreview = (frameFileName) => {
     const { frameOverlay } = elements;
     if (frameOverlay) {
-        frameOverlay.src = `Assets/${frameFileName}`;
+        frameOverlay.src = `../Assets/${frameFileName}`;
         frameOverlay.style.display = 'block';
         console.log('Preview showing:', `Assets/${frameFileName}`); // Debug
     } else {
@@ -185,7 +185,7 @@ const showFramePreview = (frameFileName) => {
 };
 
 const changeFrame = (frameFileName) => {
-    currentFrame = `Assets/${frameFileName}`;
+    currentFrame = `../Assets/${frameFileName}`;
     
     // Show preview overlay
     if (photoStage === 0) {
