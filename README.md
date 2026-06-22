@@ -3,7 +3,11 @@ A fun, browser-based photobooth web app where you can take photos, add stickers,
 
 **[👉 Try it live here!](https://bulanarts.github.io/zomato-photobooth)**
 
+## User interface of the website
 
+<img src="1.png" width="400"/>
+<img src="2.png" width="400"/>
+<img src="3.png" width="400"/>
 ---
 
 ## ✨ Features
