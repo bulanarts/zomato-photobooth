@@ -5,7 +5,7 @@ A fun, browser-based photobooth web app where you can take photos, add stickers,
 
 ## User interface of the website
 
-<img src="1.jpg" width="300"/> <img src="2.jpg" width="300"/> <img src="3.jpg" width="300"/>
+<img src="1.jpg" width="250"/> <img src="2.jpg" width="250"/> <img src="3.jpg" width="250"/>
 ---
 
 ## ✨ Features
