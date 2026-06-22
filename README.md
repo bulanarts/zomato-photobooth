@@ -2,7 +2,7 @@
 A fun, browser-based photobooth web app where you can take photos, add stickers, apply filters, and download your photo strip. Built with plain HTML, CSS, and JavaScript — no frameworks needed.
 
 **[👉 Try it live here!](https://bulanarts.github.io/zomato-photobooth)**
-*(replace this link with your own GitHub Pages URL after deploying)*
+
 
 ---
 
