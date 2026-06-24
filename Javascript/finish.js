@@ -1,48 +1,65 @@
-// constants
-const WIDTH = 1176, HEIGHT = 1470;
+// ==========================================
+// 1. CONFIGURATION & APP STATE (VARIABLES)
+// ==========================================
+// Dimensions for the photostrip canvas
+const WIDTH = 1176, 
+      HEIGHT = 1470;
 
-//dom elements
-const canvas = document.getElementById('finalCanvas'),
-    ctx = canvas.getContext('2d'),
-    addStar1Btn = document.getElementById('addStar1'),
-    addStar2Btn = document.getElementById('addStar2'),
-    addStar3Btn = document.getElementById('addStar3'),
-    addPitaBtn = document.getElementById('addPita'),
-    addFlowerBtn = document.getElementById('addFlower'),
-    addFlower2Btn = document.getElementById('addFlower2'),
-    addHeartBtn = document.getElementById('addHeart'),
-    addCloverBtn = document.getElementById('addClover'),
-    addButtonBtn = document.getElementById('addButton'),
-    addTomatoBtn = document.getElementById('addTomato'),
-    ResetBtn = document.getElementById('reset'),
-    DownloadBtn = document.getElementById('downloadBtn'),
-    HomeBtn = document.getElementById('homeBtn');
-
-// sticker state
+// Sticker state management
 let stickers = [], dragOffset = { x: 0, y: 0 }, selectedSticker = null;
 
-// load photo
-const finalImage = new Image(), dataURL = localStorage.getItem('photoStrip');
+
+// ==========================================
+// 2. DOM ELEMENT CACHING (THE SELECTORS)
+// ==========================================
+// Centralized object to reference HTML elements quickly without polluting global namespace
+const elements = {
+    canvas: document.getElementById('finalCanvas'),
+    ctx: document.getElementById('finalCanvas').getContext('2d'),
+    addStar1Btn: document.getElementById('addStar1'),
+    addStar2Btn: document.getElementById('addStar2'),
+    addStar3Btn: document.getElementById('addStar3'),
+    addPitaBtn: document.getElementById('addPita'),
+    addFlowerBtn: document.getElementById('addFlower'),
+    addFlower2Btn: document.getElementById('addFlower2'),
+    addHeartBtn: document.getElementById('addHeart'),
+    addCloverBtn: document.getElementById('addClover'),
+    addButtonBtn: document.getElementById('addButton'),
+    addTomatoBtn: document.getElementById('addTomato'),
+    resetBtn: document.getElementById('reset'),
+    downloadBtn: document.getElementById('downloadBtn'),
+    homeBtn: document.getElementById('homeBtn'),
+    retakeBtn: document.getElementById('retakeBtn')
+    
+};
+
+// ==========================================
+// 3. CANVAS DRAWING & PHOTO LOADING
+// ==========================================
+// Load the photostrip from local storage
+const finalImage = new Image();
+const dataURL = localStorage.getItem('photoStrip');
+
 if (dataURL) {
   finalImage.src = dataURL;
   finalImage.onload = drawCanvas;
   localStorage.removeItem('photoStrip');
-} else alert("No photo found!");
+} else {
+  alert("No photo found! Please take a photo first.");
+}
 
-// draw canvas
+// Draws the canvas with photostrip background and all stickers
 function drawCanvas() {
+  const { ctx } = elements;
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   ctx.drawImage(finalImage, 0, 0, WIDTH, HEIGHT);
   stickers.forEach(s => ctx.drawImage(s.img, s.x, s.y, s.width, s.height));
 }
-//retake button
-document.getElementById('retakeBtn').addEventListener('click', () => {
-  const source = localStorage.getItem('photoSource') || 'camera.html';
-  localStorage.removeItem('photoStrip');
-  localStorage.removeItem('photoSource');
-  window.location.href = source;
-});
-// add sticker
+
+// ==========================================
+// 4. STICKER MANAGEMENT FUNCTIONS
+// ==========================================
+// Adds a new sticker to the canvas
 function addSticker(src) {
   const img = new Image();
   img.src = src;
@@ -59,20 +76,29 @@ function addSticker(src) {
   };
 }
 
-// pointer position
+// Gets pointer position relative to canvas (works for both mouse and touch)
 function getPointerPos(e) {
-  const rect = canvas.getBoundingClientRect(), scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
+  const { canvas } = elements;
+  const rect = canvas.getBoundingClientRect(); 
+  const scaleX = canvas.width / rect.width; 
+  const scaleY = canvas.height / rect.height;
   const clientX = e.touches?.[0]?.clientX ?? e.clientX,
         clientY = e.touches?.[0]?.clientY ?? e.clientY;
-  return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+  return { 
+    x: (clientX - rect.left) * scaleX, 
+    y: (clientY - rect.top) * scaleY };
 }
 
-// drag and drop
+// ==========================================
+// 5. DRAG & DROP HANDLING (POINTER EVENTS)
+// ==========================================
+// Handles pointer down - selects sticker for dragging
 function pointerDown(e) {
   const { x: mouseX, y: mouseY } = getPointerPos(e);
   for (let i = stickers.length - 1; i >= 0; i--) {
     const s = stickers[i];
-    if (mouseX >= s.x && mouseX <= s.x + s.width && mouseY >= s.y && mouseY <= s.y + s.height) {
+    if (mouseX >= s.x && mouseX <= s.x + s.width && 
+      mouseY >= s.y && mouseY <= s.y + s.height) {
       selectedSticker = s;
       s.dragging = true;
       dragOffset.x = mouseX - s.x;
@@ -86,6 +112,7 @@ function pointerDown(e) {
   }
 }
 
+// Handles pointer move - drags selected sticker
 function pointerMove(e) {
   if (!selectedSticker?.dragging) return;
   const { x: mouseX, y: mouseY } = getPointerPos(e);
@@ -94,43 +121,91 @@ function pointerMove(e) {
   drawCanvas();
   e.preventDefault();
 }
-function pointerUp() { if (selectedSticker) selectedSticker.dragging = false; selectedSticker = null; }
 
-// mouse events
+// Handles pointer up - releases sticker
+function pointerUp() {
+  if (selectedSticker) {
+    selectedSticker.dragging = false; 
+    selectedSticker = null; 
+  }
+}
+
+// ==========================================
+// 6. EVENT LISTENERS & INTERACTION BINDINGS
+// ==========================================
+// Canvas pointer events (mouse)
+const { 
+  canvas, 
+  ctx, 
+  retakeBtn, 
+  resetBtn, 
+  downloadBtn, 
+  homeBtn,
+  addStar1Btn,
+  addStar2Btn,
+  addStar3Btn,
+  addPitaBtn,
+  addFlowerBtn,
+  addFlower2Btn,
+  addHeartBtn,
+  addCloverBtn,
+  addButtonBtn,
+  addTomatoBtn
+} = elements;
+
 canvas.addEventListener('mousedown', pointerDown);
 canvas.addEventListener('mousemove', pointerMove);
 canvas.addEventListener('mouseup', pointerUp);
 canvas.addEventListener('mouseleave', pointerUp);
 
-// touch events
+// Canvas pointer events (touch)
 canvas.addEventListener('touchstart', pointerDown);
 canvas.addEventListener('touchmove', pointerMove);
 canvas.addEventListener('touchend', pointerUp);
 canvas.addEventListener('touchcancel', pointerUp);
 
-// stickers
-addStar1Btn.addEventListener('click', () => addSticker('Assets/sticker_star1.png'));
-addStar2Btn.addEventListener('click', () => addSticker('Assets/sticker_star2.png'));
-addStar3Btn.addEventListener('click', () => addSticker('Assets/sticker_star3.png'));
-addPitaBtn.addEventListener('click', () => addSticker('Assets/sticker_pita.png'));
-addFlowerBtn.addEventListener('click', () => addSticker('Assets/sticker_flower.png'));
-addFlower2Btn.addEventListener('click', () => addSticker('Assets/sticker_flower2.png'));
-addHeartBtn.addEventListener('click', () => addSticker('Assets/sticker_heart.png'));
-addCloverBtn.addEventListener('click', () => addSticker('Assets/sticker_clover.png'));
-addButtonBtn.addEventListener('click', () => addSticker('Assets/sticker_button.png'));
-addTomatoBtn.addEventListener('click', () => addSticker('Assets/sticker_tomato.png'));
+// Retake button - Return to camera/upload page
+retakeBtn.addEventListener('click', () => {
+    const source = localStorage.getItem('photoSource') || 'camera.html';
+    localStorage.removeItem('photoStrip');
+    localStorage.removeItem('photoSource');
+    window.location.href = source;
+});
 
-// reset
-ResetBtn.addEventListener('click', () => { stickers = []; drawCanvas(); });
+// Sticker buttons
+    addStar1Btn.addEventListener('click', () => addSticker('Assets/sticker_star1.png'));
+    addStar2Btn.addEventListener('click', () => addSticker('Assets/sticker_star2.png'));
+    addStar3Btn.addEventListener('click', () => addSticker('Assets/sticker_star3.png'));
+    addPitaBtn.addEventListener('click', () => addSticker('Assets/sticker_pita.png'));
+    addFlowerBtn.addEventListener('click', () => addSticker('Assets/sticker_flower.png'));
+    addFlower2Btn.addEventListener('click', () => addSticker('Assets/sticker_flower2.png'));
+    addHeartBtn.addEventListener('click', () => addSticker('Assets/sticker_heart.png'));
+    addCloverBtn.addEventListener('click', () => addSticker('Assets/sticker_clover.png'));
+    addButtonBtn.addEventListener('click', () => addSticker('Assets/sticker_button.png'));
+    addTomatoBtn.addEventListener('click', () => addSticker('Assets/sticker_tomato.png'));
 
-// download
-DownloadBtn.addEventListener('click', () => {
+// Reset button - Clear all stickers
+resetBtn.addEventListener('click', () => { 
+  stickers = []; 
+  drawCanvas(); 
+});
+
+// Download button - Save final image
+downloadBtn.addEventListener('click', () => {
   canvas.toBlob(blob => {
     const a = document.createElement('a'); 
     a.href = URL.createObjectURL(blob); 
     a.download = 'tomato-photobooth.png'; 
-    a.click(); }, 'image/png');
+    a.click(); }, 
+    'image/png');
 });
 
-// home
-HomeBtn.addEventListener('click', () => window.location.href = 'index.html');
+// Home button - Navigate to landing page
+homeBtn.addEventListener('click', () => window.location.href = 'index.html');
+
+// ==========================================
+// 7. DEVICE & PAGE INITIALIZATION
+// ==========================================
+// Log initialization status
+console.log('Sticker editor initialized successfully!');
+console.log('Stickers loaded:', stickers.length);
