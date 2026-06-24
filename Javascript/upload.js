@@ -1,11 +1,20 @@
-//clear local storage
+// ==========================================
+// 1. CONFIGURATION & APP STATE (VARIABLES)
+// ==========================================
+// Clear local storage on page load to start fresh
 window.addEventListener ('DOMContentLoaded',() => localStorage.removeItem('photoStrip'));
 
-//constants
-const WIDTH = 1176, HEIGHT = 1470, HALF = HEIGHT /2;
+// Dimensions specifically tuned to output a standard 4x6 photostrip ratio
+const WIDTH = 1176, 
+HEIGHT = 1470, 
+HALF = HEIGHT / 2; // Dividing point between photo slot 1 (top) and slot 2 (bottom)
+let photoStage = 0; // 0 = Top slot empty, 1 = Bottom slot empty, 2 = Both photos taken
 
-//dom elements
-const elements ={
+// ==========================================
+// 2. DOM ELEMENT CACHING (THE SELECTORS)
+// ==========================================
+// Centralized object to reference HTML elements quickly without polluting global namespace
+const elements = {
     canvas: document.getElementById('finalCanvas'),
     ctx: document.getElementById('finalCanvas').getContext('2d'),
     uploadInput:document.getElementById('uploadPhotoInput'),
@@ -14,15 +23,18 @@ const elements ={
     downloadBtn:document.getElementById('downloadBtn')
 };
 
-let photoStage = 0; //0=top, 1=bottom, 2=done
 
-//draw photo
+// ==========================================
+// 3. CORE PHOTO PROCESSING FUNCTIONS
+// ==========================================
+// Draws uploaded image onto canvas with proper aspect ratio cropping
 const drawPhoto = img => {
     const {ctx} = elements;
     const yOffset = photoStage === 0 ? 0 : HALF;
     const imgAspect = img.width / img.height, targetAspect = WIDTH / HALF;
     let sx, sy, sw, sh;
 
+    // Auto aspect-ratio boxing calculation to prevent image stretching
     if (imgAspect > targetAspect) {
         sh = img.height; 
         sw = img.height*targetAspect;
@@ -39,7 +51,7 @@ const drawPhoto = img => {
     photoStage++;
     if (photoStage === 2) finalizePhotoStrip ();
 };
-//finalize photo strip
+// Merges photos with decorative border frame
 const finalizePhotoStrip = () => {
 const {ctx, readyBtn, downloadBtn, uploadBtn} = elements;
 const frame = new Image ();
@@ -50,17 +62,10 @@ readyBtn.style.display = 'inline-block';
 readyBtn.disabled = false;
 downloadBtn.style.display = 'inline-block';
     };
-frame.src='Assets/tomatoframe-01.png';
+frame.src='../Assets/tomatoframe-01.png';
 };
 
-//ready button
-elements.readyBtn.addEventListener('click',() => {
-localStorage.setItem('photoStrip',elements.canvas.toDataURL('image/png'));
-localStorage.setItem('photoSource', 'upload.html');
-window.location.href = 'finish.html';
-});
-
-//download photo
+// Packs current canvas maps into standard raw Binary Large Object files for physical browser downloading
 const downloadPhoto = () => {
     const {canvas} = elements;
     canvas.toBlob (blob => {
@@ -71,10 +76,21 @@ const downloadPhoto = () => {
     },'image/png');
 };
 
-//upload button
+// ==========================================
+// 4. EVENT LISTENERS & INTERACTION BINDINGS
+// ==========================================
+// Ready button - Saves photo to local storage and navigates to finish page
+//ready button
+elements.readyBtn.addEventListener('click',() => {
+localStorage.setItem('photoStrip',elements.canvas.toDataURL('image/png'));
+localStorage.setItem('photoSource', 'upload.html');
+window.location.href = 'finish.html';
+});
+
+// Upload button - Triggers hidden file input
 elements.uploadBtn.addEventListener('click',() => elements.uploadInput.click());
 
-//handle upload
+// Upload input - Handles file selection and triggers photo drawing
 elements.uploadInput.addEventListener('change',e=>{
     const file = e.target.files[0];
     if(!file) return;
@@ -84,5 +100,12 @@ elements.uploadInput.addEventListener('change',e=>{
     elements.uploadInput.value='';
 });
 
-//download button
+// Download button - Downloads the photostrip as PNG
 elements.downloadBtn.addEventListener('click',downloadPhoto);
+
+// ==========================================
+// 5. DEVICE & PAGE INITIALIZATION
+// ==========================================
+// Log initialization status (optional debug)
+console.log('Upload page initialized successfully!');
+console.log('Photo stage:', photoStage);
