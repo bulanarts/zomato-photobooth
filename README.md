@@ -1,4 +1,4 @@
-# 🍅 Zomato Photobooth Website
+# 🍅 Zomato Photobooth Website App
 A fun, browser-based photobooth web app where you can take photos, add stickers, apply filters, and download your photo strip. Built with plain HTML, CSS, and JavaScript — no frameworks needed.
 
 **[👉 Try it live here!](https://bulanarts.github.io/zomato-photobooth)**
